@@ -140,6 +140,12 @@ class Emoji(_EmojiTag, AssetMixin):
 
     def __repr__(self) -> str:
         return f"<Emoji id={self.id} name={self.name!r} animated={self.animated} managed={self.managed}>"
+      def __eq__(self, other):
+        if self.is_unicode_emoji():
+            return isinstance(other, PartialEmoji) and self.name == other.name
+
+        if isinstance(other, (PartialEmoji, Emoji)):
+            return self.id == other.id
 
     def __eq__(self, other: Any) -> bool:
         return isinstance(other, _EmojiTag) and self.id == other.id
